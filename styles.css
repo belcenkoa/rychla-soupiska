@@ -42,5 +42,8 @@ button:hover { filter: brightness(.94); }
 iframe { width: 100%; height: 580px; border: 1px solid #dce3dc; border-radius: 7px; margin-top: 20px; background: white; }
 footer { color: #627068; font-size: .82rem; text-align: center; padding: 18px; }
 a { color: var(--green); }
+.source-link { display: inline-flex; align-items: center; gap: 4px; text-decoration: none; }
+.source-link:hover { text-decoration: underline; }
+.source-link svg { width: 14px; height: 14px; }
 [hidden] { display: none !important; }
 @media (max-width: 650px) { main { margin: 24px auto; padding: 0 14px; } header { flex-wrap: wrap; gap: 12px; } .intro { flex: 1 1 calc(100% - 70px); } .clear-button { margin-left: auto; } .card { padding: 20px; } .grid { grid-template-columns: 1fr; } .board { grid-template-columns: 24px 1fr; } .board-number { grid-row: span 3; } .board > label, .board > .combo { grid-column: 2; } .mark { font-size: 48px; } }
