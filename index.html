@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Zápis o šachovém utkání</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <main>
+    <header><span class="mark" aria-hidden="true">♞</span><div class="intro"><p class="eyebrow">ŠACHOVÁ DRUŽSTVA</p><h1>Zápis o utkání</h1><p>Vyberte utkání, doplňte sestavy a připravte e-mail vedoucímu soutěže.</p></div><button id="clear-form" type="button" class="secondary clear-button">Vymazat formulář</button></header>
+    <div id="status" role="status" aria-live="polite"></div>
+    <button id="retry" type="button" hidden>Zkusit znovu</button>
+    <form id="match-form">
+      <section class="card">
+        <h2><span>1</span> Soutěž a utkání</h2>
+        <div class="grid">
+          <label>Rok začátku sezóny<input id="year" type="number" min="1900" max="9998" required><small>Např. 2026 znamená sezónu 2026/2027.</small></label>
+          <div id="region-picker"></div>
+          <div id="competition-picker"></div>
+          <div id="round-picker"></div>
+          <div id="team-picker" class="wide"></div>
+        </div>
+        <p id="fixture" class="fixture" hidden></p>
+      </section>
+      <section id="lineup-section" class="card" hidden>
+        <h2><span>2</span> Sestavy a výsledky</h2>
+        <p class="muted">Výsledky jsou vždy v pořadí domácí : hosté. Hledejte podle jména, čísla soupisky nebo ELO.</p>
+        <label class="count-label">Počet šachovnic<input id="board-count" type="number" min="1" value="8" required></label>
+        <div id="boards"></div>
+        <p id="order-warning" class="order-warning" role="status" aria-live="polite" hidden></p>
+        <p id="score" class="score" aria-live="polite"></p>
+        <div class="grid">
+          <label>Datum utkání<input id="match-date" type="date" required></label>
+          <label>Místo utkání<input id="venue" required placeholder="Hrací místnost, město"></label>
+          <label>Rozhodčí<input id="referee" required placeholder="Jméno a příjmení"></label>
+        </div>
+      </section>
+      <section id="email-section" class="card" hidden>
+        <h2><span>3</span> Zápis a e-mail</h2>
+        <label>Komu<input id="recipient" type="email" required><small>Adresa vedoucího soutěže z API; v případě potřeby ji můžete opravit.</small></label>
+        <div class="actions"><button type="submit">Zobrazit náhled zápisu</button></div>
+        <div id="report" hidden>
+          <label>Předmět<input id="subject" readonly></label>
+          <iframe id="preview" title="Náhled zápisu o utkání" sandbox=""></iframe>
+          <div class="actions">
+            <button id="compose" type="button">Otevřít nový e-mail</button>
+            <button id="copy" type="button" class="secondary">Kopírovat formátovaný zápis</button>
+            <button id="download" type="button" class="secondary">Stáhnout koncept (.eml)</button>
+          </div>
+          <p class="muted">Otevření e-mailu vloží textový zápis. Pro tabulku zkopírujte formátovaný zápis a vložte jej do těla e-mailu, nebo otevřete soubor .eml v poštovním klientovi, který podporuje koncepty.</p>
+        </div>
+      </section>
+    </form>
+    <footer>Formulář se průběžně ukládá pouze v tomto prohlížeči. Data: <a href="https://appchess.cz/api/index.html" target="_blank" rel="noopener">api.chess.cz</a> · E-mail odešlete ze svého poštovního klienta.</footer>
+  </main>
+  <!-- Bundled template for file:// access and when template.html is unavailable.
+       Keep its layout in sync with template.html; one row is expanded per board. -->
+  <script id="report-template" type="text/plain">
+<!DOCTYPE html>
+<html lang="cs">
+<head><meta charset="UTF-8"><title>Zápis o šachovém utkání</title></head>
+<body style="font-family:Arial,sans-serif; color:#222; line-height:1.5;">
+  <div style="max-width:700px; margin:0 auto;">
+    <p>
+      <strong>Soutěž:</strong> [Název soutěže]<br>
+      <strong>Ročník:</strong> [Ročník]<br>
+      <strong>Kolo:</strong> [Kolo]<br>
+      <strong>Datum:</strong> [Datum utkání]<br>
+      <strong>Místo:</strong> [Místo utkání]
+    </p>
+    <h3>Sestavy družstev</h3>
+    <p>
+      <strong>Domácí:</strong> [Název domácího družstva]<br>
+      <strong>Hosté:</strong> [Název hostujícího družstva]
+    </p>
+    <table style="width:100%; border-collapse:collapse; text-align:left;">
+      <thead>
+        <tr style="background-color:#eee;">
+          <th style="border:1px solid #999; padding:8px;">Šachovnice</th>
+          <th style="border:1px solid #999; padding:8px;">[Název domácího družstva]</th>
+          <th style="border:1px solid #999; padding:8px;">Výsledek</th>
+          <th style="border:1px solid #999; padding:8px;">[Název hostujícího družstva]</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="border:1px solid #999; padding:8px;">1</td>
+          <td style="border:1px solid #999; padding:8px;">[Jméno hráče]</td>
+          <td style="border:1px solid #999; padding:8px;">[Výsledek]</td>
+          <td style="border:1px solid #999; padding:8px;">[Jméno hráče]</td>
+        </tr>
+      </tbody>
+    </table>
+    <p><strong>Celkový výsledek zápasu:</strong> [Domácí] : [Hosté]</p>
+    <p><strong>Rozhodčí:</strong> [Jméno]</p>
+  </div>
+</body>
+</html>
+  </script>
+</body>
+</html>
